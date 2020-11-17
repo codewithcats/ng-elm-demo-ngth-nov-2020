@@ -1,8 +1,8 @@
 const merge = require('webpack-merge');
 
 module.exports = (config) => {
-  const isProd = config.mode === "production";
-  const tailwindConfig = require("./tailwind.config.js")(isProd);
+  const isProd = config.mode === 'production';
+  const tailwindConfig = require('./tailwind.config.js')(isProd);
 
   return merge(config, {
     module: {
@@ -14,15 +14,18 @@ module.exports = (config) => {
             postcssOptions: {
               ident: 'postcss',
               syntax: 'postcss-scss',
-              plugins: [
-                require('postcss-import'),
-                require('tailwindcss')(tailwindConfig),
-                require('autoprefixer'),
-              ]
-            }
-          }
-        }
-      ]
-    }
+              plugins: [require('postcss-import'), require('tailwindcss')(tailwindConfig), require('autoprefixer')],
+            },
+          },
+        },
+        {
+          test: /\.elm$/,
+          exclude: [/elm-stuff/, /node_modules/],
+          use: {
+            loader: 'elm-webpack-loader',
+          },
+        },
+      ],
+    },
   });
 };
